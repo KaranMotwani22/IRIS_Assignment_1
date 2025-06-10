@@ -16,9 +16,9 @@ This FastAPI application processes an Excel sheet (`capbudg.xls`) and exposes RE
 
 ## Features
 
-- ✅ List all tables (Excel sheet names)
-- ✅ View row names from a specific table
-- ✅ Calculate sum of numerical values in a given row
+- List all tables (Excel sheet names)
+- View row names from a specific table
+- Calculate sum of numerical values in a given row
 
 ---
 
@@ -103,21 +103,26 @@ You can import the `postman_collection.json` file into Postman to test the API.
 
 ## My Insights
 
-### 🔁 Potential Improvements
+### Potential Improvements
 - The excel file provided should have separated sheets for different tables which can help making the code more robust and reducing potential errors.
 - Support for `.xlsx` and `.csv` formats.
 - File upload endpoint for dynamic file processing.
 - UI dashboard to visualize Excel data.
 
-### ⚠️ Missed Edge Cases
+### Missed Edge Cases
 - The Table names are recognized based on Italic font and borders for table, so multiple tables can be recognized in the same sheet, if you don't make the table-name italic it will be missed.
 - As I am using a dictionary for storing tables duplicate names can cause issues.
 - Empty Excel files or sheets.
 - Non-numeric or malformed values in data rows.
 
+## Logic
+
+1. I've made the table-names italic so that they can be recognized in code and covered all the table structures with a border to recognize the no. of rows and column of the given table
+2. The tables are then stored in a dictionary named tables with their names as keys and the data as values in the form of dataframes. 
+
 ---
 
-## 👨‍💻 Author
+##  Author
 
 Karan Motwani
 
