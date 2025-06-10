@@ -31,13 +31,20 @@ git clone https://github.com/KaranMotwani22/IRIS_Assignment_1
 cd IRIS_Assignment_1
 ```
 
-2. **Install dependencies**
+2. **Create and activate a virtual environment**
+
+```bash
+python -m venv venv
+venv/Scripts/Activate
+```
+
+3. **Install dependencies**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Run the server**
+4. **Run the server**
 
 ```bash
 uvicorn main:app --reload --port 9090
@@ -104,21 +111,24 @@ You can import the `postman_collection.json` file into Postman to test the API.
 ## My Insights
 
 ### Potential Improvements
-- The excel file provided should have separated sheets for different tables which can help making the code more robust and reducing potential errors.
+- Provide separate sheets for different tables in the Excel file to improve robustness and reduce parsing errors.
 - Support for `.xlsx` and `.csv` formats.
 - File upload endpoint for dynamic file processing.
 - UI dashboard to visualize Excel data.
 
 ### Missed Edge Cases
-- The Table names are recognized based on Italic font and borders for table, so multiple tables can be recognized in the same sheet, if you don't make the table-name italic it will be missed.
-- As I am using a dictionary for storing tables duplicate names can cause issues.
-- Empty Excel files or sheets.
-- Non-numeric or malformed values in data rows.
+- Table names are identified based on italic font and bordered table structures. If the table name is not italicized, it will not be detected.
+- Since tables are stored in a dictionary using their names as keys, duplicate table names may lead to data being overwritten.
+- Does not currently handle:
+  - Empty Excel files or sheets.
+  - Non-numeric or malformed values in data rows
+
 
 ## Logic
 
-1. I've made the table-names italic so that they can be recognized in code and covered all the table structures with a border to recognize the no. of rows and column of the given table
-2. The tables are then stored in a dictionary named tables with their names as keys and the data as values in the form of dataframes. 
+1. Table names are identified by applying italic font styling in the Excel sheet.
+2. Bordered table structures help detect the number of rows and columns per table.
+3. All detected tables are stored in a dictionary named tables, using the table names as keys and the data as pandas DataFrames.
 
 ---
 
