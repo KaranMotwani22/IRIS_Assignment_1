@@ -6,7 +6,7 @@ from typing import Dict, List
 import re
 
 app = FastAPI()
-file_path = "./Data/capbudg.xls"  # Path to your Excel file
+file_path = "./Data/capbudg.xls"  
 
 # Allow all origins for simplicity
 app.add_middleware(
@@ -17,7 +17,7 @@ app.add_middleware(
 )
 
 def clean_value(value):
-    """Clean strings like $50,000 or 10% for numeric conversion."""
+    #Clean strings like $50,000 or 10% for numeric conversion.
     if isinstance(value, (int, float)) and not pd.isna(value):
         return float(value)  # Return numbers directly
     if not isinstance(value, str) or not value.strip():
@@ -27,7 +27,7 @@ def clean_value(value):
     if cleaned.endswith('%'):
         cleaned = cleaned.rstrip('%')
         try:
-            return float(cleaned) #/ 100  # Convert 10% to 0.10
+            return float(cleaned) #/ 100  
         except ValueError:
             return None
     try:
@@ -37,9 +37,8 @@ def clean_value(value):
 
 def load_excel_sheets() -> Dict[str, pd.DataFrame]:
     try:
-        # Load the .xls file with xlrd
         workbook = xlrd.open_workbook(file_path, formatting_info=True)
-        sheet = workbook.sheet_by_index(0)  # First sheet (CapBudgWS)
+        sheet = workbook.sheet_by_index(0)  
         font_list = workbook.font_list
 
         # Dictionary to store table names and their DataFrames
@@ -160,7 +159,6 @@ def load_excel_sheets() -> Dict[str, pd.DataFrame]:
                 if not df.empty and df.shape[1] > 0:
                     tables[table_name] = df
 
-        # Debug: Print detected table names and column counts
         print("Table Names and Column Counts found in the first sheet:")
         for name, _, start_col, end_col in table_info:
             print(f"{name}: {end_col - start_col} columns (from col {start_col} to {end_col - 1})")
