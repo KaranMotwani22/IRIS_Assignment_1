@@ -6,8 +6,8 @@ This FastAPI application processes an Excel sheet (`capbudg.xls`) and exposes RE
 ## 📂 File Structure
 ```
 .
-├── app/
-│   └── main.py
+
+├── main.py
 ├── Data/
 │   └── capbudg.xls
 ├── requirements.txt
@@ -101,15 +101,16 @@ You can import the `postman_collection.json` file into Postman to test the API.
 ## 🧠 Your Insights
 
 ### 🔁 Potential Improvements
+- The excel file provided should have separated sheets for different tables which can help making the code more robust and reduced potential errors.
 - Support for `.xlsx` and `.csv` formats.
 - File upload endpoint for dynamic file processing.
 - UI dashboard to visualize Excel data.
-- Caching for better performance on large files.
 
 ### ⚠️ Missed Edge Cases
+- The Table names are recognized based on Italic font and borders for table, so multiple tables can be recognized in the same sheet, if you don't make the table-name italic it will be missed.
+- As I am using a dictionary for storing tables duplicate names can cause issues.
 - Empty Excel files or sheets.
 - Non-numeric or malformed values in data rows.
-- Duplicate row names or table names.
 
 ---
 
