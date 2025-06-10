@@ -1,95 +1,120 @@
-# FastAPI Excel Processor Assignment
 
-## Overview
+# FastAPI Excel Processor
 
-The primary goal of this assignment is to assess your understanding of API development using FastAPI, your problem-solving skills, your coding style, and your ability to present your work clearly and professionally.
+This FastAPI application processes an Excel sheet (`capbudg.xls`) and exposes RESTful endpoints to interact with the data.
 
-You are tasked with creating a FastAPI application that can read data from a given Excel sheet and expose a few endpoints to interact with this data.
+## 📂 File Structure
+```
+.
+├── app/
+│   └── main.py
+├── Data/
+│   └── capbudg.xls
+├── requirements.txt
+└── README.md
+```
 
-## Tasks
+## 🚀 Features
 
-Your main task is to develop a FastAPI application with the following functionalities:
+- ✅ List all tables (Excel sheet names)
+- ✅ View row names from a specific table
+- ✅ Calculate sum of numerical values in a given row
 
-### 1. Excel Sheet Processing
-The application must be able to read a provided Excel sheet and parse its contents (`/Data/capbudg.xls`).
+---
 
-### 2. API Endpoints
-You need to implement the following FastAPI endpoints. Please use `http://localhost:9090` as the base URL for your endpoints.
+## 🔧 Setup Instructions
 
-#### a. `GET /list_tables`
-   - **Functionality:** This endpoint should list all the table names present in the uploaded/specified Excel sheet.
-   - **Response Example:**
-     ```json
-     {
-       "tables": ["Initial Investment", "Revenue Projections", "Operating Expenses"]
-     }
-     ```
+1. **Clone the repository**
 
-#### b. `GET /get_table_details`
-   - **Parameters:**
-     - `table_name: str` (Query parameter specifying the name of the table)
-   - **Functionality:** This endpoint should return the names of the rows for the selected table. These row names are typically the values found in the first column of that table.
-   - **Example:** If the user selects the "Initial Investment" table, the API should list the first column values like so:
-     ```json
-     {
-       "table_name": "Initial Investment",
-       "row_names": [
-         "Initial Investment=",
-         "Opportunity cost (if any)=",
-         "Lifetime of the investment",
-         "Salvage Value at end of project=",
-         "Deprec. method(1:St.line;2:DDB)=",
-         "Tax Credit (if any )=",
-         "Other invest.(non-depreciable)="
-       ]
-     }
-     ```
+```bash
+git clone https://github.com/your-username/excel-api.git
+cd excel-api
+```
 
-#### c. `GET /row_sum`
-   - **Parameters:**
-     - `table_name: str` (Query parameter specifying the name of the table)
-     - `row_name: str` (Query parameter specifying the name of the row, which must be one of the names returned by `/get_table_details`)
-   - **Functionality:** This endpoint should calculate and return the sum of all numerical data points in the specified row of the specified table.
-   - **Example:** If the `row_name` is `"Tax Credit (if any )="` for a table where this row contains the value `10` (or `10%`), the output should be:
-     ```json
-     {
-       "table_name": "Initial Investment",
-       "row_name": "Tax Credit (if any )=",
-       "sum": 10 
-     }
-     ```
-     *(Note: You can decide whether to include units like '%' in the response or just return the numerical sum. Please clarify your approach in your documentation.)*
+2. **Install dependencies**
 
-## Evaluation Criteria
+```bash
+pip install -r requirements.txt
+```
 
-We will be evaluating your submission based on the following:
+3. **Run the server**
 
-*   **Problem-Solving Skills:** Your ability to understand the requirements and implement a functional solution.
-*   **Coding Style:** Clarity, organization, and adherence to Python best practices. We expect well-structured, modular code, with docstrings, and robust error handling etc.
-*   **Presentation Style:** The quality and completeness of this `README.md` file (which you will update with your insights) and the Postman collection.
-*   **Documentation:** Ensure your code is well-documented.
+```bash
+uvicorn main:app --reload --port 9090
+```
 
-## Your Insights
+---
 
-Please complete the following sections with your thoughts on the assignment.
+## 📬 API Endpoints
 
-### Potential Improvements
-*(Describe any ideas you have on how this application or assignment could be improved or extended. For example, handling different Excel formats, more advanced data operations, UI integration, etc.)*
+### 1. `GET /list_tables`
+Returns a list of all tables in the Excel sheet.
 
-### Missed Edge Cases
-*(Identify any edge cases or scenarios that your current implementation might not handle or that were not explicitly covered in the requirements. For example, empty Excel files, tables with no numerical data, malformed table names, etc.)*
+**Response:**
+```json
+{
+  "tables": ["Initial Investment", "Revenue Projections", "Operating Expenses"]
+}
+```
 
-## Testing
+---
 
-To help us quickly test your application, please provide a Postman collection JSON.
+### 2. `GET /get_table_details?table_name=Initial Investment`
+Returns first-column values (row names) from a specific table.
 
-*   **Base URL:** `http://localhost:9090` and the given endpoint names.
-*   **Postman Collection:** 
+**Response:**
+```json
+{
+  "table_name": "Initial Investment",
+  "row_names": [
+    "Initial Investment=",
+    "Opportunity cost (if any)=",
+    ...
+  ]
+}
+```
 
-## Deadline
+---
 
-Please submit your solution by **Saturday, May 10th, EOD**. Ensure you fill out the form provided in your email with the repository link (make sure the repository is public) and any other requested details. We plan to evaluate the submissions early Sunday morning and will schedule final interviews on the same day.
+### 3. `GET /row_sum?table_name=Initial Investment&row_name=Tax Credit (if any )=`
+Returns sum of numerical values in a specific row.
 
-Feel free to open an issue in this repo if you have any questions. Your honesty is appreciated in this test.
+**Response:**
+```json
+{
+  "table_name": "Initial Investment",
+  "row_name": "Tax Credit (if any )=",
+  "sum": 10
+}
+```
 
-Good luck! We look forward to reviewing your submission. 
+---
+
+## 🧪 Testing with Postman
+
+### Base URL: `http://localhost:9090`
+
+You can import the `postman_collection.json` file into Postman to test the API.
+
+---
+
+## 🧠 Your Insights
+
+### 🔁 Potential Improvements
+- Support for `.xlsx` and `.csv` formats.
+- File upload endpoint for dynamic file processing.
+- UI dashboard to visualize Excel data.
+- Caching for better performance on large files.
+
+### ⚠️ Missed Edge Cases
+- Empty Excel files or sheets.
+- Non-numeric or malformed values in data rows.
+- Duplicate row names or table names.
+
+---
+
+## 👨‍💻 Author
+
+Karan Motwani
+
+---
