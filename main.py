@@ -40,6 +40,7 @@ def load_excel_sheets() -> Dict[str, pd.DataFrame]:
         workbook = xlrd.open_workbook(file_path, formatting_info=True)
         sheet = workbook.sheet_by_index(0)  
         font_list = workbook.font_list
+        format_list = workbook.format_list
 
         # Dictionary to store table names and their DataFrames
         tables = {}
@@ -59,7 +60,7 @@ def load_excel_sheets() -> Dict[str, pd.DataFrame]:
                 borders = cell_xf.border
 
                 # Check for italicized header to identify potential table start
-                if cell_value and isinstance(cell_value, str) and len(cell_value.strip()) > 5 and font.italic:
+                if cell_value and isinstance(cell_value, str) and font.italic:
                     current_table_name = cell_value.strip().replace('\n', ' ')
                     start_col = col
                     # Look for black outline to determine end_col
@@ -130,10 +131,14 @@ def load_excel_sheets() -> Dict[str, pd.DataFrame]:
                     try:
                         cell_value = sheet.cell_value(row, col)
                         cell_type = sheet.cell_type(row, col)
+                        cell_xf_index = sheet.cell_xf_index(row, col)
+                        cell_xf = workbook.xf_list[cell_xf_index]
+                        format_obj = format_list[cell_xf.format_key] if cell_xf.format_key < len(format_list) else None
+                        format_str = format_obj.format_str.lower() if format_obj else ''
 
                         # For first column, handle percentage values
                         # if col == current_start_col:
-                        if cell_type == xlrd.XL_CELL_NUMBER and 0 < cell_value <= 1:
+                        if cell_type == xlrd.XL_CELL_NUMBER and 0 < cell_value <= 1 and '$"#,##0_);[red]\\("$"#,##0\\)' in format_str:
                             # Heuristic: assume small numbers (0 < x <= 1) are percentages
                             display_value = f"{cell_value * 100:.2f}%"
                             row_data.append(display_value)
@@ -157,7 +162,8 @@ def load_excel_sheets() -> Dict[str, pd.DataFrame]:
             if table_data:
                 df = pd.DataFrame(table_data)
                 if not df.empty and df.shape[1] > 0:
-                    tables[table_name] = df
+                    df.iloc[:, 0] = df.iloc[:, 0].astype(str).replace('nan', '')
+                    tables[table_name.upper()] = df
 
         print("Table Names and Column Counts found in the first sheet:")
         for name, _, start_col, end_col in table_info:
@@ -179,8 +185,9 @@ def list_tables():
 @app.get("/get_table_details")
 def get_table_details(table_name: str = Query(...)):
     tables = load_excel_sheets()
+    table_name = table_name.upper()
     if table_name not in tables:
-        raise HTTPException(status_code=404, detail=f"Table '{table_name}' not found. Available tables: {list(tables.keys())}")
+        raise HTTPException(status_code=404, detail=f"Table '{table_name}' not found.If your table contains special characters like & replace them with their proper encoding in the URL(e.g. & with %26). Available tables: {list(tables.keys())}")
     df = tables[table_name]
     # Assume first column contains row names, drop NaN and convert to strings
     row_names = df.iloc[:, 0].dropna().astype(str).str.strip().tolist()
@@ -189,6 +196,7 @@ def get_table_details(table_name: str = Query(...)):
 @app.get("/row_sum")
 def row_sum(table_name: str = Query(...), row_name: str = Query(...)):
     tables = load_excel_sheets()
+    table_name = table_name.upper()
     if table_name not in tables:
         raise HTTPException(status_code=404, detail=f"Table '{table_name}' not found. Available tables: {list(tables.keys())}")
     df = tables[table_name]
