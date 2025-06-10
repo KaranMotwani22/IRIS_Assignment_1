@@ -3,7 +3,7 @@
 
 This FastAPI application processes an Excel sheet (`capbudg.xls`) and exposes RESTful endpoints to interact with the data.
 
-## 📂 File Structure
+## File Structure
 ```
 .
 
@@ -14,7 +14,7 @@ This FastAPI application processes an Excel sheet (`capbudg.xls`) and exposes RE
 └── README.md
 ```
 
-## 🚀 Features
+## Features
 
 - ✅ List all tables (Excel sheet names)
 - ✅ View row names from a specific table
@@ -22,13 +22,13 @@ This FastAPI application processes an Excel sheet (`capbudg.xls`) and exposes RE
 
 ---
 
-## 🔧 Setup Instructions
+## Setup Instructions
 
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/your-username/excel-api.git
-cd excel-api
+git clone https://github.com/KaranMotwani22/IRIS_Assignment_1
+cd IRIS_Assignment_1
 ```
 
 2. **Install dependencies**
@@ -45,7 +45,7 @@ uvicorn main:app --reload --port 9090
 
 ---
 
-## 📬 API Endpoints
+## API Endpoints
 
 ### 1. `GET /list_tables`
 Returns a list of all tables in the Excel sheet.
@@ -53,44 +53,47 @@ Returns a list of all tables in the Excel sheet.
 **Response:**
 ```json
 {
-  "tables": ["Initial Investment", "Revenue Projections", "Operating Expenses"]
+  "tables": ["INITIAL INVESTMENT","CASHFLOW DETAILS","DISCOUNT RATE"]
 }
 ```
 
 ---
 
-### 2. `GET /get_table_details?table_name=Initial Investment`
+### 2. `GET /get_table_details?table_name=CASHFLOW DETAILS`
 Returns first-column values (row names) from a specific table.
 
 **Response:**
 ```json
 {
-  "table_name": "Initial Investment",
+  "table_name": "CASHFLOW DETAILS",
   "row_names": [
-    "Initial Investment=",
-    "Opportunity cost (if any)=",
-    ...
+    "Revenues in  year 1=",
+    "Var. Expenses as % of Rev=",
+    "Fixed expenses in year 1=",
+    "Tax rate on net income=",
+    "If you do not have the breakdown of fixed and variable",
+    "expenses, input the entire expense as a % of revenues."
   ]
 }
 ```
 
 ---
 
-### 3. `GET /row_sum?table_name=Initial Investment&row_name=Tax Credit (if any )=`
+### 3. `GET /row_sum?table_name=INITIAL INVESTMENT&row_name=Initial Investment=`
 Returns sum of numerical values in a specific row.
 
 **Response:**
 ```json
 {
-  "table_name": "Initial Investment",
-  "row_name": "Tax Credit (if any )=",
-  "sum": 10
+  "table_name": "INITIAL INVESTMENT",
+  "row_name": "Initial Investment=",
+  "sum": 50000
 }
 ```
 
 ---
 
-## 🧪 Testing with Postman
+## Testing with Postman
 
 ### Base URL: `http://localhost:9090`
 
@@ -98,10 +101,10 @@ You can import the `postman_collection.json` file into Postman to test the API.
 
 ---
 
-## 🧠 Your Insights
+## My Insights
 
 ### 🔁 Potential Improvements
-- The excel file provided should have separated sheets for different tables which can help making the code more robust and reduced potential errors.
+- The excel file provided should have separated sheets for different tables which can help making the code more robust and reducing potential errors.
 - Support for `.xlsx` and `.csv` formats.
 - File upload endpoint for dynamic file processing.
 - UI dashboard to visualize Excel data.
