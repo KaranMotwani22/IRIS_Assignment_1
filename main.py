@@ -167,6 +167,10 @@ def load_excel_sheets() -> Dict[str, pd.DataFrame]:
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error reading Excel file: {str(e)}")
 
+@app.get("/")
+def root():
+    return {"message": "FastAPI Excel Processor is running!"}
+
 @app.get("/list_tables")
 def list_tables():
     tables = load_excel_sheets()
