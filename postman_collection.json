@@ -51,7 +51,7 @@
       "request": {
         "method": "GET",
         "url": {
-          "raw": "http://localhost:9090/row_sum?table_name=Initial Investment&row_name=Tax Credit (if any )=",
+          "raw": "http://localhost:9090/row_sum?table_name=CASHFLOW DETAILS&row_name=Revenues in  year 1=",
           "protocol": "http",
           "host": [
             "localhost"
@@ -63,11 +63,11 @@
           "query": [
             {
               "key": "table_name",
-              "value": "Initial Investment"
+              "value": "CASHFLOW DETAILS"
             },
             {
               "key": "row_name",
-              "value": "Tax Credit (if any )="
+              "value": "Revenues in  year 1="
             }
           ]
         }

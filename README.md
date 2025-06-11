@@ -66,20 +66,16 @@ Returns a list of all tables in the Excel sheet.
 
 ---
 
-### 2. `GET /get_table_details?table_name=CASHFLOW DETAILS`
+### 2. `GET /get_table_details?table_name=SALVAGE VALUE`
 Returns first-column values (row names) from a specific table.
 
 **Response:**
 ```json
 {
-  "table_name": "CASHFLOW DETAILS",
+  "table_name": "SALVAGE VALUE",
   "row_names": [
-    "Revenues in  year 1=",
-    "Var. Expenses as % of Rev=",
-    "Fixed expenses in year 1=",
-    "Tax rate on net income=",
-    "If you do not have the breakdown of fixed and variable",
-    "expenses, input the entire expense as a % of revenues."
+    "Equipment",
+    "Working Capital"
   ]
 }
 ```
